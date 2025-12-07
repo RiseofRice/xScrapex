@@ -125,16 +125,24 @@ This file contains tweet IDs that have already been seen to prevent duplicate no
 
 - **Web Scraping**: This tool uses web scraping via Nitter (privacy-focused Twitter frontend) to avoid requiring Twitter API keys
 - **Rate Limiting**: Be respectful with polling intervals. Recommended minimum: 60 seconds
-- **Reliability**: Nitter instances may occasionally be unavailable. The tool tries multiple instances automatically
+- **Reliability**: Nitter instances may occasionally be unavailable due to Twitter's API changes and instance shutdowns. The tool automatically tries multiple instances and will continue retrying. If all instances fail, the scraper will keep trying on subsequent checks.
 - **Windows Only**: Native notifications work best on Windows 10+. On other platforms, console output is still available
 
 ## Troubleshooting
 
-### "No tweets found"
-- The Nitter instances might be temporarily unavailable
+### "No tweets found" or "All Nitter instances failed"
+- The Nitter instances might be temporarily unavailable (this is common since Twitter's 2024 API changes)
 - Check your internet connection
-- Try increasing the polling interval
+- The scraper will automatically retry on the next polling interval
+- Try increasing the polling interval to reduce request frequency
 - The username might be misspelled or the account might be private
+- For up-to-date Nitter instance status, visit: https://status.d420.de/
+
+### "Failed to fetch" or connection errors
+- Many Nitter instances have shut down or become unreliable due to Twitter's API changes in 2024
+- The tool tries multiple instances automatically and will keep retrying
+- These errors are normal and the scraper will continue working, attempting to fetch on each subsequent check
+- If you consistently cannot fetch tweets, all public Nitter instances may be down temporarily
 
 ### "win10toast not available"
 - Make sure you installed dependencies: `pip install -r requirements.txt`
