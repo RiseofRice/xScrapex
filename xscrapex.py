@@ -11,6 +11,11 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
+from colorama import init, Fore, Style
+
+# Constants
+NOTIFICATION_MESSAGE_MAX_LENGTH = 200
+DEFAULT_POLLING_INTERVAL = 60
 
 
 class TwitterScraper:
@@ -180,7 +185,7 @@ class Notifier:
             tweet: Tweet dictionary with 'text', 'url', etc.
         """
         title = f"New tweet from @{username}"
-        message = tweet['text'][:200]  # Limit message length
+        message = tweet['text'][:NOTIFICATION_MESSAGE_MAX_LENGTH]  # Limit message length
         
         # Print to console
         print(f"\n{'='*60}")
@@ -203,7 +208,7 @@ class Notifier:
                 print(f"Failed to show Windows notification: {e}")
 
 
-def monitor_user(username, interval=60):
+def monitor_user(username, interval=DEFAULT_POLLING_INTERVAL):
     """
     Monitor a Twitter/X user for new tweets.
     
@@ -211,7 +216,6 @@ def monitor_user(username, interval=60):
         username: Twitter username to monitor
         interval: Polling interval in seconds (default: 60)
     """
-    from colorama import init, Fore, Style
     init()  # Initialize colorama for Windows
     
     scraper = TwitterScraper(username)
@@ -278,8 +282,8 @@ Examples:
     parser.add_argument(
         '--interval', '-i',
         type=int,
-        default=60,
-        help='Polling interval in seconds (default: 60)'
+        default=DEFAULT_POLLING_INTERVAL,
+        help=f'Polling interval in seconds (default: {DEFAULT_POLLING_INTERVAL})'
     )
     
     args = parser.parse_args()
