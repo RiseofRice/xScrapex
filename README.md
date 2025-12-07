@@ -19,6 +19,22 @@ A Twitter/X scraper that monitors a given username and sends notifications for e
 
 ## Installation
 
+### Quick Setup
+
+Run the setup script to verify your installation:
+
+```bash
+python setup.py
+```
+
+This will:
+- Check Python version compatibility
+- Verify all dependencies are installed
+- Offer to install missing dependencies
+- Check for Windows notification support
+
+### Manual Installation
+
 1. Clone this repository:
 ```bash
 git clone https://github.com/RiseofRice/xScrapex.git
@@ -30,7 +46,33 @@ cd xScrapex
 pip install -r requirements.txt
 ```
 
+3. **Windows Users**: Install Windows notification support:
+```bash
+pip install win10toast
+```
+
+Note: On Windows 10/11, you may need to enable notifications for Python in Windows Settings → System → Notifications.
+
 ## Usage
+
+### Windows Quick Start (Batch File)
+
+For Windows users, you can use the included batch file:
+
+```batch
+xscrapex.bat username
+```
+
+Or with custom interval:
+```batch
+xscrapex.bat username 120
+```
+
+The batch file will:
+- Check for Python installation
+- Install dependencies if needed
+- Install Windows notification support
+- Run the scraper
 
 ### Basic Usage
 
