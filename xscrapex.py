@@ -72,12 +72,26 @@ class TwitterScraper:
         
         tweets = []
         
-        # Try multiple nitter instances
+        # Try multiple nitter instances (updated December 2024)
+        # Note: Nitter instance availability changes frequently
+        # For updated lists, see: https://status.d420.de/
         nitter_instances = [
             f'https://nitter.net/{self.username}',
-            f'https://nitter.privacydev.net/{self.username}',
             f'https://nitter.poast.org/{self.username}',
+            f'https://nitter.privacydev.net/{self.username}',
+            f'https://nitter.pussthecat.org/{self.username}',
+            f'https://nitter.woodland.cafe/{self.username}',
+            f'https://nitter.1d4.us/{self.username}',
+            f'https://nitter.kavin.rocks/{self.username}',
+            f'https://nitter.unixfox.eu/{self.username}',
+            f'https://nitter.moomoo.me/{self.username}',
+            f'https://nitter.fdn.fr/{self.username}',
+            f'https://nitter.it/{self.username}',
+            f'https://nitter.dark.fail/{self.username}',
         ]
+        
+        successful_instance = None
+        last_error = None
         
         for instance_url in nitter_instances:
             try:
@@ -85,10 +99,22 @@ class TwitterScraper:
                 if response.status_code == 200:
                     tweets = self._parse_nitter_page(response.text)
                     if tweets:
+                        successful_instance = instance_url
                         break
-            except Exception as e:
-                print(f"Failed to fetch from {instance_url}: {e}")
+            except requests.exceptions.Timeout:
+                last_error = f"Timeout connecting to {instance_url}"
                 continue
+            except requests.exceptions.ConnectionError as e:
+                last_error = f"Connection error for {instance_url}: {type(e).__name__}"
+                continue
+            except Exception as e:
+                last_error = f"Failed to fetch from {instance_url}: {e}"
+                continue
+        
+        if not tweets and last_error:
+            print(f"Warning: All Nitter instances failed. Last error: {last_error}")
+            print("Note: Nitter instances may be temporarily unavailable. This is normal.")
+            print("The scraper will keep trying on the next check.")
         
         return tweets
     
