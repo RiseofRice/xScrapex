@@ -90,7 +90,6 @@ class TwitterScraper:
             f'https://nitter.dark.fail/{self.username}',
         ]
         
-        successful_instance = None
         last_error = None
         
         for instance_url in nitter_instances:
@@ -99,7 +98,6 @@ class TwitterScraper:
                 if response.status_code == 200:
                     tweets = self._parse_nitter_page(response.text)
                     if tweets:
-                        successful_instance = instance_url
                         break
             except requests.exceptions.Timeout:
                 last_error = f"Timeout connecting to {instance_url}"
